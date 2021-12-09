@@ -11,17 +11,12 @@ import Task from "./components/Task.js";
 export default function App() {
   const [text, setText] = useState();
   const [taskItems, setTaskItems] = useState([]);
+  const [task, setTask] = useState();
   const [filteredArray, setFilteredArray] = useState(taskItems);
-  const makeid = () => {
-    var Text = " ";
-    var possible =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (var i = 0; i < 5; i++)
-      Text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    setTaskItems([...taskItems, Text]);
-    setFilteredArray([...taskItems, Text]);
+  const handleAddTask = () => {
+    setTaskItems([...taskItems, task]);
+    setFilteredArray([...taskItems, task]);
+    setTask(null);
   };
   const deleteTask = (index) => {
     let copyTask = [...taskItems];
@@ -30,6 +25,7 @@ export default function App() {
     setFilteredArray(copyTask);
   };
   const Filtered = (searchText) => {
+    setTask(searchText);
     let filterArray = taskItems.filter((i) =>
       i.toLowerCase().includes(searchText.toLowerCase())
     );
@@ -42,10 +38,11 @@ export default function App() {
         <View style={styles.writeTaskWrapper}>
           <TextInput
             style={styles.input}
-            onChangeText={(search) => Filtered(search)}
             placeholder={"write a task"}
+            value={task}
+            onChangeText={(text) => Filtered(text)}
           />
-          <TouchableOpacity onPress={() => makeid()}>
+          <TouchableOpacity onPress={() => handleAddTask()}>
             <View style={styles.addWrapper}>
               <Text style={styles.addText}>+</Text>
             </View>
